@@ -49,21 +49,19 @@ function App()
     <>
       <h1>ACTUAL take home test</h1>
 
-      <div>
-        <label>Search Field : {' '}</label>
-        <select value = {field} onChange = {(e) => setField(e.target.value as 'color' | 'language')}>
+      <div style = {{padding: '5px', margin: 'auto', width: 'fit-content'}}>
+        <label>Search by Field : {' '}</label>
+        <select value = {field} onChange = {(e) => setField(e.target.value as 'color' | 'language')} style={{marginRight: '10px'}}>
           <option value = 'color'>Color</option>
           <option value = 'language'>Language</option>
         </select>
-      </div>
-      <div>
-        <label>{' '} Search Value : {' '}</label>
-        <input type = 'text' value = {searchValue} placeholder = {`Input ${field}`} onChange = {(e) => setSearchValue(e.target.value)}/>
-        <label>{' '}</label>
+        <input type = 'text' value = {searchValue} placeholder = {`Input ${field}`} 
+          onChange = {(e) => setSearchValue(e.target.value) } style={{marginRight: '10px'}}/>
         <button onClick={handleSearch}>Search</button>
       </div>
-      <div>
-        <button onClick = {handleCountryGrouping}>Group Listings By Country</button>
+  
+      <div style={{margin: 'auto', width: 'fit-content'}}>
+        <button onClick = {handleCountryGrouping} style={{marginRight: '10px'}}>Group Listings By Country</button>
         <button onClick = {handleNullSearch}>Find Listings will null {field}</button>
       </div>
 
