@@ -19,6 +19,19 @@ export function getListingsByField(field: 'color' | 'language', searchValue: str
 	return data.filter((item: Listing) => item[field]?.toLowerCase() === searchValue.toLowerCase());
 }
 
+export function getListingGroupedByCountry() : { [country: string]: Listing[] } {
+	const groupings: { [country: string]: Listing[] } = {};
+	data.forEach(item => {
+		const country = item.country ?? "No Country";
+		if(!groupings[country]) {
+			groupings[country] = [];
+		}
+		groupings[country].push(item);
+	});
+
+	return groupings;
+}
+
 export function getListingsWithNull(field: 'color' | 'language'): Listing[] {
   return data.filter((item: Listing) => item[field] === null);
 }

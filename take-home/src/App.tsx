@@ -1,6 +1,6 @@
 import { fetchData } from './middleware/middleware.ts'
 import { useState, useEffect } from 'react';
-import { type Listing, getListingsByField, getListingsWithNull } from './middleware/middleware.ts';
+import { type Listing, getListingsByField, getListingGroupedByCountry, getListingsWithNull } from './middleware/middleware.ts';
 import data from './mock-data/MOCK_DATA.json';
 import './App.css';
 
@@ -10,16 +10,31 @@ function App()
   const [searchValue, setSearchValue] = useState('');
   const [field, setField] = useState<'color' | 'language'>('color');
   const [results, setResults] = useState<Listing[]>([]);
-
+  const [groupResults, setGroupResults] = useState<{[country: string]: Listing[]}>({});
   useEffect(() => {setResults(data); }, []);
+
   const handleSearch = () => {
-    const res = getListingsByField(field, searchValue);
-    setResults(res);
+    if(searchValue == "") {
+      setResults(data);
+    }
+    else
+    {
+      const res = getListingsByField(field, searchValue);
+      setResults(res);
+    }
+    setGroupResults({});
+  };
+
+  const handleCountryGrouping = () => {
+    const groupings = getListingGroupedByCountry();
+    setResults([]);
+    setGroupResults(groupings);
   };
 
   const handleNullSearch = () => {
     const res = getListingsWithNull(field);
     setResults(res);
+    setGroupResults({});
   };
 
   return (
@@ -40,30 +55,70 @@ function App()
         <button onClick={handleSearch}>Search</button>
       </div>
       <div>
-        <button onClick={handleNullSearch}>Find Listings will null {field}</button>
+        <button onClick = {handleCountryGrouping}>Group Listings By Country</button>
+        <button onClick = {handleNullSearch}>Find Listings will null {field}</button>
       </div>
 
-      <h2>Results: {results.length} Listings Found</h2>
-      <table className = 'table' style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid white' }}>
-        <tr>
-          <th></th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Country</th>
-          <th>Language</th>
-          <th>Color</th>
-        </tr>
-        {results.map((item, index) => ( 
-          <tr key={item.id}>
-            <td>{index + 1}</td>
-            <td>{item.first_name} {item.last_name}</td>
-            <td>{item.email}</td>
-            <td>{item.country}</td>
-            <td>{item.language}</td>
-            <td>{item.color}</td>
-          </tr>
-        ))}
-      </table>
+      {results && Object.keys(groupResults).length == 0 && (
+        <>
+          <h2>Results: {results.length} Listings Found</h2>
+          {results.length > 0 ? (
+            <table className='table' style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid white' }}>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Country</th>
+                <th>Language</th>
+                <th>Color</th>
+              </tr>
+              {results.map((item, index) => (
+                <tr key={item.id}>
+                  <td>{index + 1}</td>
+                  <td>{item.first_name} {item.last_name}</td>
+                  <td>{item.email}</td>
+                  <td>{item.country}</td>
+                  <td>{item.language}</td>
+                  <td>{item.color}</td>
+                </tr>
+              ))}
+            </table>
+          ) : (
+            <p>No Results Found</p>
+          )}
+        </>
+      )}
+
+      {Object.keys(groupResults).length > 0 && (
+        <>
+          <h2>Listings Grouped By Country</h2>
+            {Object.entries(groupResults).map(([country, listings]) => (
+            <div key={country}>
+              <h3>{country} ({listings.length} Listings)</h3>
+              <table className='table' style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid white' }}>
+                <tr>
+                  <th></th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Country</th>
+                  <th>Language</th>
+                  <th>Color</th>
+                </tr>
+                {listings.map((item, index) => (
+                  <tr key={item.id}>
+                    <td>{index + 1}</td>
+                    <td>{item.first_name} {item.last_name}</td>
+                    <td>{item.email}</td>
+                    <td>{item.country}</td>
+                    <td>{item.language}</td>
+                    <td>{item.color}</td>
+                  </tr>
+                ))}
+              </table>
+            </div>
+          ))}
+        </>
+      )}
     </>
   )
 }
