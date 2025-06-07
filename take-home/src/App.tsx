@@ -11,6 +11,7 @@ function App()
   const [field, setField] = useState<'color' | 'language'>('color');
   const [results, setResults] = useState<Listing[]>([]);
   const [groupResults, setGroupResults] = useState<{[country: string]: Listing[]}>({});
+  const [expandCountries, setExpandCountries] = useState<{[country: string]: boolean}>({});
   useEffect(() => {setResults(data); }, []);
 
   const handleSearch = () => {
@@ -35,6 +36,13 @@ function App()
     const res = getListingsWithNull(field);
     setResults(res);
     setGroupResults({});
+  };
+
+  const toggleCountry = (country: string) => {
+    setExpandCountries(prev => ({
+      ...prev,
+      [country]: !prev[country]
+    }));
   };
 
   return (
@@ -94,27 +102,35 @@ function App()
           <h2>Listings Grouped By Country</h2>
             {Object.entries(groupResults).map(([country, listings]) => (
             <div key={country}>
-              <h3>{country} ({listings.length} Listings)</h3>
-              <table className='table' style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid white' }}>
-                <tr>
-                  <th></th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Country</th>
-                  <th>Language</th>
-                  <th>Color</th>
-                </tr>
-                {listings.map((item, index) => (
-                  <tr key={item.id}>
-                    <td>{index + 1}</td>
-                    <td>{item.first_name} {item.last_name}</td>
-                    <td>{item.email}</td>
-                    <td>{item.country}</td>
-                    <td>{item.language}</td>
-                    <td>{item.color}</td>
+              <h3>
+                {country} ({listings.length} Listings)
+                <button onClick={() => toggleCountry(country)} style={{ marginLeft: '10px'}}>
+                  {expandCountries[country] ? '-' : '+'}
+                </button>
+              </h3>
+
+              {expandCountries[country] && (
+                <table className='table' style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid white' }}>
+                  <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Country</th>
+                    <th>Language</th>
+                    <th>Color</th>
                   </tr>
-                ))}
-              </table>
+                  {listings.map((item, index) => (
+                    <tr key={item.id}>
+                      <td>{index + 1}</td>
+                      <td>{item.first_name} {item.last_name}</td>
+                      <td>{item.email}</td>
+                      <td>{item.country}</td>
+                      <td>{item.language}</td>
+                      <td>{item.color}</td>
+                    </tr>
+                  ))}
+                </table>
+              )}
             </div>
           ))}
         </>
