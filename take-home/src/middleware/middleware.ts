@@ -4,3 +4,21 @@ import data from '../mock-data/MOCK_DATA.json';
 export const fetchData = () => {
 	console.log(data)
 };
+
+export interface Listing {
+	id: number;
+	first_name: string;
+	last_name: string;
+	email: string;
+	country: string | null;
+	language: string | null;
+	color: string | null;
+};
+
+export function getListingsByField(field: 'color' | 'language', searchValue: string): Listing[]{
+	return data.filter((item: Listing) => item[field]?.toLowerCase() === searchValue.toLowerCase());
+}
+
+export function getListingsWithNull(field: 'color' | 'language'): Listing[] {
+  return data.filter((item: Listing) => item[field] === null);
+}
