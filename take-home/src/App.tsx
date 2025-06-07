@@ -2,6 +2,7 @@ import { fetchData } from './middleware/middleware.ts'
 import { useState, useEffect } from 'react';
 import { type Listing, getListingsByField, getListingsWithNull } from './middleware/middleware.ts';
 import data from './mock-data/MOCK_DATA.json';
+import './App.css';
 
 function App() 
 {
@@ -43,18 +44,26 @@ function App()
       </div>
 
       <h2>Results: {results.length} Listings Found</h2>
-      <ul>
-        {results.map((item) => (
-          <li key = {item.id}> {item.first_name} {item.last_name}
-            <ul>
-              <li>Email: {item.email}</li>
-              <li>Country: {item.country}</li>
-              <li>Language: {item.language}</li>
-              <li>Color: {item.color}</li>
-            </ul>
-          </li>
+      <table className = 'table' style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid white' }}>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Country</th>
+          <th>Language</th>
+          <th>Color</th>
+        </tr>
+        {results.map((item, index) => ( 
+          <tr key={item.id}>
+            <td>{index + 1}</td>
+            <td>{item.first_name} {item.last_name}</td>
+            <td>{item.email}</td>
+            <td>{item.country}</td>
+            <td>{item.language}</td>
+            <td>{item.color}</td>
+          </tr>
         ))}
-      </ul>
+      </table>
     </>
   )
 }
