@@ -1,38 +1,20 @@
 # coding-take-home
 
-## Overview
+## **Initial Screen**
+Upon opening the screen, the search options are presented to the user with a table that shows every entry  
+![Inital Screen](take-home/screenshots/initial_page.png)
 
-This is a relatively simple take home test for us to assess your general knowledge of setting up a basic app.
+## **Searching by color and language**
+User is able to toggle between searching by color and language. Results are shown in the table below the search bars  
+![Search by color](take-home/screenshots/color_search.png)  
+![Search by language](take-home/screenshots/language_search.png)
 
-We are looking for an overall understanding of React, Typescript, and general app design.
+## **Grouping by Country**
+By pushing the Group Listings by Country button, the user is presented with mini tables with each listing by country  
+![Listings by country](take-home/screenshots/country_grouping.png)  
+![UK Listings](take-home/screenshots/uk_listings.png)
 
-The instructions on how to run the application locally is in the README file in the take-home folder.
-
-You are free to add a better file structure, but this task should really only need edits to the files App.tsx, and middleware.ts.
-
-To complete this challenge, please fork this repository and build your own code, then share a link to your version of the repository with some screenshots of the app working locally.
-
-## Task
-
-### Part One
-
-In the mock-data folder, there is a json which is meant to represent an API call from the backend. You are to build a middleware to fetch this data, and conduct some light processing for the front end. 
-
-This should minimally include three key fetch calls
-
-1) Return an array of listings of a particular color or language
-
-2) Return an array of listings of all countries represented in the database
-
-3) Return an array of all listings which have a null value of a particular key like color or language.
-
-
-### Part Two
-
-Once you have all your fetch calls, you will build a single page application to show the results of these fetch calls in a way that makes the most sense to you. This is a test of not only your understanding of front end development, but a general understanding of UI and UX. We are looking for an app that someone could jump in cold and immediately understand how to use.
-
-This UI should minimally include but is not limited to the following basic features.
-
-- The ability to search and display all listings of a particular color or language.
-- A way to visualize each listing grouped by country.
-- A way to display the number of listings which does not have data on the searched category.
+## **Finding missing information**
+By toggling the Search by Field dropdown and pushing the null search button, the user can find listing with missing color or language  
+![Missing colors](take-home/screenshots/null_color.png)  
+![Missing Languages](take-home/screenshots/null_language.png)
